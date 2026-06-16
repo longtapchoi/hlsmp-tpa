@@ -1,0 +1,25 @@
+name: HLSMP-TPA
+version: '1.3'
+main: de.elivb.donutTPA.TPA
+api-version: '1.21'
+author: HLSMP
+description: ᴘʟᴜɢɪɴ ᴛᴘᴀ ᴄʜᴏ ᴍáʏ ᴄʜủ ʜʟsᴍᴘ
+folia-supported: true
+
+commands:
+  tpa:
+  tpahere:
+  tpaccept:
+  tpadeny:
+  tpacancel:
+  tpatoggle:
+  tpaheretoggle:
+  tpareload:
+  tpagui:
+  tpaheregui:
+  tpaconfirmtoggle:
+  tpauto:
+
+permissions:
+  tpa.admin:
+    default: op

@@ -1,0 +1,216 @@
+package de.elivb.donutTPA.gui;
+
+import de.elivb.donutTPA.Hex;
+import de.elivb.donutTPA.TPA;
+import java.util.ArrayList;
+import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.PluginManager;
+
+public class TPAHereSendGUI implements Listener {
+   private final TPA plugin;
+   private final Player sender;
+   private final Player target;
+   private Inventory gui;
+   private final String guiConfigName = "tpa_here_send_gui";
+
+   public TPAHereSendGUI(TPA plugin, Player sender, Player target) {
+      this.plugin = plugin;
+      this.sender = sender;
+      this.target = target;
+   }
+
+   public void open() {
+      String guiName = this.plugin.getGUIManager().getGUIName("tpa_here_send_gui", "&8ᴛᴘᴀ ʜᴇʀᴇ");
+      int rows = this.plugin.getGUIManager().getGUIRows("tpa_here_send_gui", 3);
+      this.gui = Bukkit.createInventory((InventoryHolder)null, rows * 9, Hex.translateAllColorCodes(guiName));
+      ItemStack cancelItem = this.createIcon("cancel-icon", Material.RED_STAINED_GLASS_PANE);
+      int cancelSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "cancel-icon", 10);
+      this.gui.setItem(cancelSlot, cancelItem);
+      ItemStack locationItem = this.createLocationIcon();
+      int locationSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "location-icon", 12);
+      this.gui.setItem(locationSlot, locationItem);
+      ItemStack playerItem = this.createPlayerIcon();
+      int playerSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "player-icon", 13);
+      this.gui.setItem(playerSlot, playerItem);
+      ItemStack confirmItem = this.createIcon("confirm-icon", Material.LIME_STAINED_GLASS_PANE);
+      int confirmSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "confirm-icon", 16);
+      this.gui.setItem(confirmSlot, confirmItem);
+      ItemStack flyItem = this.createIcon("fly-icon", Material.FEATHER);
+      int flySlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "fly-icon", 14);
+      this.gui.setItem(flySlot, flyItem);
+      PluginManager pm = this.plugin.getServer().getPluginManager();
+      pm.registerEvents(this, this.plugin);
+      this.sender.openInventory(this.gui);
+   }
+
+   @EventHandler
+   public void onInventoryClick(InventoryClickEvent event) {
+      if (event.getWhoClicked() instanceof Player) {
+         if (event.getInventory().equals(this.gui)) {
+            event.setCancelled(true);
+            Player player = (Player)event.getWhoClicked();
+            int slot = event.getSlot();
+            int confirmSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "confirm-icon", 16);
+            int cancelSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "cancel-icon", 10);
+            int locationSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "location-icon", 12);
+            int playerSlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "player-icon", 13);
+            int flySlot = this.plugin.getGUIManager().getIconSlot("tpa_here_send_gui", "fly-icon", 14);
+            if (slot == confirmSlot || slot == cancelSlot || slot == locationSlot || slot == playerSlot || slot == flySlot) {
+               this.plugin.getSoundManager().playButtonClickSound(player);
+            }
+
+            if (slot == confirmSlot) {
+               player.closeInventory();
+               this.plugin.sendTPARequestDirect(this.sender, this.target, true);
+            } else if (slot == cancelSlot) {
+               player.closeInventory();
+               this.sender.sendMessage(this.plugin.getLanguageManager().getMessage("request-cancelled"));
+            }
+
+         }
+      }
+   }
+
+   @EventHandler
+   public void onInventoryClose(InventoryCloseEvent event) {
+      if (event.getInventory().equals(this.gui)) {
+         HandlerList.unregisterAll(this);
+      }
+   }
+
+   private String getFlyStatus(boolean isFlying) {
+      String path = "fly-status." + isFlying;
+      String status = this.plugin.getConfigManager().getConfig().getString(path);
+      if (status == null) {
+         return isFlying ? "Có" : "Không";
+      } else {
+         return Hex.translateAllColorCodes(status);
+      }
+   }
+
+   private ItemStack createIcon(String iconName, Material defaultMaterial) {
+      String materialName = this.plugin.getGUIManager().getIconMaterial("tpa_here_send_gui", iconName, defaultMaterial.name());
+      Material material = Material.getMaterial(materialName);
+      if (material == null) {
+         material = defaultMaterial;
+      }
+
+      ItemStack item = new ItemStack(material);
+      ItemMeta meta = item.getItemMeta();
+      String displayName = this.plugin.getGUIManager().getIconDisplayName("tpa_here_send_gui", iconName, (String)null);
+      if (displayName != null) {
+         String parsed = Hex.translateAllColorCodes(displayName);
+         if (displayName.contains("%player%")) {
+            parsed = parsed.replace("%player%", this.target.getName());
+         }
+
+         meta.setDisplayName(parsed);
+      }
+
+      List<String> lore = this.plugin.getGUIManager().getIconLore("tpa_here_send_gui", iconName);
+      if (lore != null && !lore.isEmpty()) {
+         List<String> translatedLore = new ArrayList();
+
+         for(String line : lore) {
+            String translated = Hex.translateAllColorCodes(line);
+            if (line.contains("%player%")) {
+               translated = translated.replace("%player%", this.target.getName());
+            }
+
+            if (line.contains("%world%")) {
+               String worldName = this.sender.getWorld().getName();
+               String worldNickname = this.plugin.getConfigManager().getWorldNickname(worldName);
+               translated = translated.replace("%world%", Hex.translateAllColorCodes(worldNickname));
+            }
+
+            if (line.contains("%is_flying%")) {
+               String flyStatus = this.getFlyStatus(this.sender.isFlying());
+               translated = translated.replace("%is_flying%", flyStatus);
+            }
+
+            translatedLore.add(translated);
+         }
+
+         meta.setLore(translatedLore);
+      }
+
+      item.setItemMeta(meta);
+      return item;
+   }
+
+   private ItemStack createLocationIcon() {
+      ItemStack item = new ItemStack(Material.GRASS_BLOCK);
+      ItemMeta meta = item.getItemMeta();
+      String displayName = this.plugin.getGUIManager().getIconDisplayName("tpa_here_send_gui", "location-icon", "&#00f986ʟᴏᴄᴀᴛɪᴏɴ");
+      meta.setDisplayName(Hex.translateAllColorCodes(displayName));
+      List<String> lore = this.plugin.getGUIManager().getIconLore("tpa_here_send_gui", "location-icon");
+      if (lore != null && !lore.isEmpty()) {
+         List<String> translatedLore = new ArrayList();
+
+         for(String line : lore) {
+            String translated = Hex.translateAllColorCodes(line);
+            if (line.contains("%world%")) {
+               String worldName = this.sender.getWorld().getName();
+               String worldNickname = this.plugin.getConfigManager().getWorldNickname(worldName);
+               translated = translated.replace("%world%", Hex.translateAllColorCodes(worldNickname));
+            }
+
+            translatedLore.add(translated);
+         }
+
+         meta.setLore(translatedLore);
+      } else {
+         String worldName = this.sender.getWorld().getName();
+         String worldNickname = this.plugin.getConfigManager().getWorldNickname(worldName);
+         List<String> loreList = new ArrayList();
+         loreList.add(Hex.translateAllColorCodes("&7" + worldNickname));
+         meta.setLore(loreList);
+      }
+
+      item.setItemMeta(meta);
+      return item;
+   }
+
+   private ItemStack createPlayerIcon() {
+      ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+      SkullMeta meta = (SkullMeta)item.getItemMeta();
+      meta.setOwningPlayer(this.target);
+      String displayName = this.plugin.getGUIManager().getIconDisplayName("tpa_here_send_gui", "player-icon", "&#00f986ᴘʟᴀʏᴇʀ");
+      meta.setDisplayName(Hex.translateAllColorCodes(displayName));
+      List<String> lore = this.plugin.getGUIManager().getIconLore("tpa_here_send_gui", "player-icon");
+      if (lore != null && !lore.isEmpty()) {
+         List<String> translatedLore = new ArrayList();
+
+         for(String line : lore) {
+            String translated = Hex.translateAllColorCodes(line);
+            if (line.contains("%player%")) {
+               translated = translated.replace("%player%", this.target.getName());
+            }
+
+            translatedLore.add(translated);
+         }
+
+         meta.setLore(translatedLore);
+      } else {
+         List<String> loreList = new ArrayList();
+         loreList.add(Hex.translateAllColorCodes("&7" + this.target.getName()));
+         meta.setLore(loreList);
+      }
+
+      item.setItemMeta(meta);
+      return item;
+   }
+}

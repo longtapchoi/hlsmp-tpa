@@ -1,0 +1,33 @@
+name: '&8xáᴄ ɴʜậɴ ᴛᴘᴀ ʜᴇʀᴇ'
+rows: 3
+icons:
+  cancel-icon:
+    slot: 10
+    material: RED_STAINED_GLASS_PANE
+    display-name: '&#FF0000ʜủʏ'
+    lore:
+      - '&fNhấn để huỷ'
+  location-icon:
+    slot: 12
+    material: GRASS_BLOCK
+    display-name: '&#00f986ᴠị ᴛʀí'
+    lore:
+      - '&7%world%'
+  player-icon:
+    slot: 13
+    material: PLAYER_HEAD
+    display-name: '&#00f986ɴɢườɪ ᴄʜơɪ'
+    lore:
+      - '&7%player%'
+  confirm-icon:
+    slot: 16
+    material: LIME_STAINED_GLASS_PANE
+    display-name: '&#00FF00xáᴄ ɴʜậɴ'
+    lore:
+      - '&fNhấn để chấp nhận yêu cầu TPA Here từ %player%'
+  fly-icon:
+    slot: 14
+    material: FEATHER
+    display-name: '&#00f986đᴀɴɢ ʙᴀʏ'
+    lore:
+      - '&7%is_flying%'

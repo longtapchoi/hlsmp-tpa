@@ -1,0 +1,83 @@
+#Tại đây bạn có thể chỉnh sửa toàn bộ tin nhắn và action bar của plugin
+
+#Placeholder
+#%player% - Tên người chơi
+#%time% - Thời gian (giây)
+#%count% - Số đếm ngược
+
+#Tại đây bạn có thể chỉnh prefix của plugin
+prefix-enable: false
+prefix: "&#00f986ᴛᴘᴀ &7»"
+
+messages:
+  no-permission: "&cBạn không có quyền sử dụng lệnh này!"
+  player-only: "&cLệnh này chỉ dành cho người chơi!"
+  player-offline: "&cNgười chơi đó không online!"
+  tpahere-sent: "&fĐã gửi yêu cầu TPA HERE đến &#00f986%player%&f!"
+  self-request: "&cBạn không thể gửi yêu cầu TPA cho chính mình!"
+  player-disabled: "&cNgười chơi này đã tắt nhận yêu cầu TPA!"
+  player-disabled-tpahere: "&cNgười chơi này đã tắt nhận yêu cầu TPA HERE!"
+  sender-offline: "&fNgười gửi yêu cầu đã offline!"
+  no-pending-requests: "&cBạn không có yêu cầu TPA nào đang chờ!"
+  no-requests-to-cancel: "&cBạn không có yêu cầu TPA nào để huỷ!"
+  reload-success: "&aTPA đã được tải lại!"
+  tpa-sent: "&fĐã gửi yêu cầu TPA đến &#00f986%player%&f!"
+  tpahere-received: "&fNgười chơi &#00f986%player% &fmuốn bạn dịch chuyển đến họ!"
+  request-expired-sender: "&fYêu cầu TPA đến &#00f986%player% &fđã hết hạn!"
+  request-expired-receiver: "&fYêu cầu TPA từ &#00f986%player% &fđã hết hạn!"
+  request-cancelled-receiver: "&fNgười chơi &#00f986%player% &fđã huỷ yêu cầu TPA!"
+  request-accepted: "&fBạn đã chấp nhận yêu cầu TPA!"
+  request-denied: "&cBạn đã từ chối yêu cầu TPA!"
+  request-cancelled: "&fBạn đã huỷ yêu cầu TPA!"
+  teleported-to-sender: "&fBạn đã được dịch chuyển đến &#00f986%player%&f!"
+  target-teleported-to-you: "&fNgười chơi &#00f986%player% &fđã được dịch chuyển đến bạn!"
+  tpa-enabled: "&fBạn đã &#00FF00bật&f nhận yêu cầu TPA!"
+  tpa-disabled: "&fBạn đã &#FF0000tắt&f nhận yêu cầu TPA!"
+  tpahere-disabled: "&fBạn đã &#FF0000tắt&f nhận yêu cầu TPA HERE!"
+  tpahere-enabled: "&fBạn đã &#00FF00bật&f nhận yêu cầu TPA HERE!"
+  teleport-started: "&fĐang dịch chuyển trong &b%count% &fgiây"
+  teleport-cancelled: "&cĐã huỷ dịch chuyển!"
+  already-teleporting: "&cBạn đang trong quá trình dịch chuyển!"
+  tpa-received-clickable: "&fNgười chơi &a%player% &fmuốn bạn dịch chuyển đến họ!"
+  tpahere-received-clickable: "&fNgười chơi &a%player% &fmuốn dịch chuyển đến bạn!"
+  clickable-accept: "&a&lCHẤP NHẬN"
+  clickable-accept-hover: "&fNhấn để chấp nhận yêu cầu TPA"
+  clickable-deny: "&c&lTỪ CHỐI"
+  clickable-deny-hover: "&fNhấn để từ chối yêu cầu TPA"
+  tpa-gui-enabled: "&fBạn đã &#00FF00bật&f GUI xác nhận TPA!"
+  tpa-gui-disabled: "&fBạn đã &#FF0000tắt&f GUI xác nhận TPA!"
+  tpahere-gui-enabled: "&fBạn đã &#00FF00bật&f GUI xác nhận TPA HERE!"
+  tpahere-gui-disabled: "&fBạn đã &#FF0000tắt&f GUI xác nhận TPA HERE!"
+  tpa-auto-enabled: "&fBạn đã &#00FF00bật&f tự động chấp nhận yêu cầu TPA!"
+  tpa-auto-disabled: "&fBạn đã &#FF0000tắt&f tự động chấp nhận yêu cầu TPA!"
+  tpa-auto-accepted-target: "&fBạn đã tự động chấp nhận yêu cầu TPA từ &#00f986%player%&f!"
+  tpa-auto-accepted: "&fYêu cầu TPA của bạn đến &#00f986%player%&f đã được tự động chấp nhận!"
+
+action-bars:
+  reload-success: "&aTPA đã được tải lại!"
+  request-accepted: "&fBạn đã chấp nhận yêu cầu TPA!"
+  request-denied: "&cBạn đã từ chối yêu cầu TPA!"
+  request-cancelled: "&fBạn đã huỷ yêu cầu TPA!"
+  request-received: "&fTPA mới! &#00FF00/tpaccept &for &#FF0000/tpadeny"
+  teleported-to-sender: "&fBạn đã được dịch chuyển đến &#00f986%player%&f!"
+  target-teleported-to-you: "&fNgười chơi &#00f986%player% &fđã được dịch chuyển đến bạn!"
+  teleport-started: "&fĐang dịch chuyển trong &b%count% &fgiây"
+  teleport-cancelled: "&cĐã huỷ dịch chuyển!"
+  already-teleporting: "&cBạn đang trong quá trình dịch chuyển!"
+
+command-usage: |
+  &#00f986&lTPA
+  &#00f986➤ &f/tpa <người chơi>
+  &#00f986➤ &f/tpahere <người chơi>
+  &#00f986➤ &f/tpaccept
+  &#00f986➤ &f/tpadeny
+  &#00f986➤ &f/tpacancel
+  &#00f986➤ &f/tpatoggle
+  &#00f986➤ &f/tpaheretoggle
+  &#00f986➤ &f/tpagui
+  &#00f986➤ &f/tpaheregui
+  &#00f986➤ &f/tpauto
+
+admin-command-usage: |
+  &#00f986&lTPA ADMIN
+  &#00f986➤ &f/tpareload
